@@ -9,8 +9,8 @@ public class UserPojo implements Serializable {
 
 	private static final long serialVersionUID = 5479860183418683518L;
 
-	private String name = null;
-	private String surmane1 = null;
+	private String theName = null;
+	private String surname1 = null;
 	private String surname2 = null;
 	private String dni = null;
 	private Date birthDate = null;
@@ -22,20 +22,20 @@ public class UserPojo implements Serializable {
 	private AccountPojo account = null;
 	private List<ReproductionListPojo> ReproductionLists = null;
 
-	public String getName() {
-		return name;
+	public String getTheName() {
+		return theName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTheName(String theName) {
+		this.theName = theName;
 	}
 
-	public String getSurmane1() {
-		return surmane1;
+	public String getSurname1() {
+		return surname1;
 	}
 
-	public void setSurmane1(String surmane1) {
-		this.surmane1 = surmane1;
+	public void setSurname1(String surname1) {
+		this.surname1 = surname1;
 	}
 
 	public String getSurname2() {
@@ -116,8 +116,8 @@ public class UserPojo implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(ReproductionLists, account, address, birthDate, city, dni, name, postalCode, province,
-				surmane1, surname2);
+		return Objects.hash(ReproductionLists, account, address, birthDate, city, dni, postalCode, province, surname1,
+				surname2, theName);
 	}
 
 	@Override
@@ -131,15 +131,14 @@ public class UserPojo implements Serializable {
 		UserPojo other = (UserPojo) obj;
 		return Objects.equals(ReproductionLists, other.ReproductionLists) && Objects.equals(account, other.account)
 				&& Objects.equals(address, other.address) && Objects.equals(birthDate, other.birthDate)
-				&& Objects.equals(city, other.city) && Objects.equals(dni, other.dni)
-				&& Objects.equals(name, other.name) && postalCode == other.postalCode
-				&& Objects.equals(province, other.province) && Objects.equals(surmane1, other.surmane1)
-				&& Objects.equals(surname2, other.surname2);
+				&& Objects.equals(city, other.city) && Objects.equals(dni, other.dni) && postalCode == other.postalCode
+				&& Objects.equals(province, other.province) && Objects.equals(surname1, other.surname1)
+				&& Objects.equals(surname2, other.surname2) && Objects.equals(theName, other.theName);
 	}
 
 	@Override
 	public String toString() {
-		return "UserPojo [name=" + name + ", surmane1=" + surmane1 + ", surname2=" + surname2 + ", dni=" + dni
+		return "UserPojo [theName=" + theName + ", surname1=" + surname1 + ", surname2=" + surname2 + ", dni=" + dni
 				+ ", birthDate=" + birthDate + ", address=" + address + ", postalCode=" + postalCode + ", city=" + city
 				+ ", province=" + province + ", account=" + account + ", ReproductionLists=" + ReproductionLists + "]";
 	}
