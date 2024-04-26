@@ -38,7 +38,7 @@ public class Frame {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 650, 470);
+		frame.setBounds(100, 100, 715, 511);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -74,17 +74,6 @@ public class Frame {
 		musicPanels.add(groups);
 		frame.getContentPane().add(groupsPanel);
 		
-		DiscsView discs= new DiscsView(musicPanels);
-		JPanel discsPanel = discs.getPanel();
-		discsPanel.setVisible(false);
-		musicPanels.add(discs);
-		frame.getContentPane().add(discsPanel);
-		
-		SongView song= new SongView(musicPanels);
-		JPanel songPanel = song.getPanel();
-		songPanel.setVisible(false);
-		musicPanels.add(song);
-		frame.getContentPane().add(songPanel);
 		
 		PodcasterView podcaster= new PodcasterView(musicPanels);
 		JPanel podcasterPanel = podcaster.getPanel();
@@ -92,19 +81,6 @@ public class Frame {
 		musicPanels.add(podcaster);
 		frame.getContentPane().add(podcasterPanel);
 		
-		
-		SeriesView series= new SeriesView(musicPanels);
-		JPanel seriesPanel = series.getPanel();
-		seriesPanel.setVisible(false);
-		musicPanels.add(series);
-		frame.getContentPane().add(seriesPanel);
-		
-		
-		PodcastView podcast= new PodcastView(musicPanels);
-		JPanel podcastPanel = podcast.getPanel();
-		podcastPanel.setVisible(false);
-		musicPanels.add(podcast);
-		frame.getContentPane().add(podcastPanel);
 		
 		ReproductionView reproduction= new ReproductionView(musicPanels);
 		JPanel reproductionPanel = reproduction.getPanel();

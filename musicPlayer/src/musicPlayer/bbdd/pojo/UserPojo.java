@@ -2,46 +2,48 @@ package musicPlayer.bbdd.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class UserPojo implements Serializable {
 
 	private static final long serialVersionUID = 5479860183418683518L;
 
-	private String nombre = null;
-	private String apellido1 = null;
-	private String apellido2 = null;
+	private String name = null;
+	private String surmane1 = null;
+	private String surname2 = null;
 	private String dni = null;
-	private Date fechaNacimiento = null;
-	private String direccion = null;
-	private int codigoPosal = 0;
-	private String ciudad = null;
-	private String provincica = null;
+	private Date birthDate = null;
+	private String address = null;
+	private int postalCode = 0;
+	private String city = null;
+	private String province = null;
 
-	private AccountPojo Account = null;
+	private AccountPojo account = null;
+	private List<ReproductionListPojo> ReproductionLists = null;
 
-	public String getNombre() {
-		return nombre;
+	public String getName() {
+		return name;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getApellido1() {
-		return apellido1;
+	public String getSurmane1() {
+		return surmane1;
 	}
 
-	public void setApellido1(String apellido1) {
-		this.apellido1 = apellido1;
+	public void setSurmane1(String surmane1) {
+		this.surmane1 = surmane1;
 	}
 
-	public String getApellido2() {
-		return apellido2;
+	public String getSurname2() {
+		return surname2;
 	}
 
-	public void setApellido2(String apellido2) {
-		this.apellido2 = apellido2;
+	public void setSurname2(String surname2) {
+		this.surname2 = surname2;
 	}
 
 	public String getDni() {
@@ -52,52 +54,60 @@ public class UserPojo implements Serializable {
 		this.dni = dni;
 	}
 
-	public Date getFechaNacimiento() {
-		return fechaNacimiento;
+	public Date getBirthDate() {
+		return birthDate;
 	}
 
-	public void setFechaNacimiento(Date fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
 	}
 
-	public String getDireccion() {
-		return direccion;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-	public int getCodigoPosal() {
-		return codigoPosal;
+	public int getPostalCode() {
+		return postalCode;
 	}
 
-	public void setCodigoPosal(int codigoPosal) {
-		this.codigoPosal = codigoPosal;
+	public void setPostalCode(int postalCode) {
+		this.postalCode = postalCode;
 	}
 
-	public String getCiudad() {
-		return ciudad;
+	public String getCity() {
+		return city;
 	}
 
-	public void setCiudad(String ciudad) {
-		this.ciudad = ciudad;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
-	public String getProvincica() {
-		return provincica;
+	public String getProvince() {
+		return province;
 	}
 
-	public void setProvincica(String provincica) {
-		this.provincica = provincica;
+	public void setProvince(String province) {
+		this.province = province;
 	}
 
 	public AccountPojo getAccount() {
-		return Account;
+		return account;
 	}
 
 	public void setAccount(AccountPojo account) {
-		Account = account;
+		this.account = account;
+	}
+
+	public List<ReproductionListPojo> getReproductionLists() {
+		return ReproductionLists;
+	}
+
+	public void setReproductionLists(List<ReproductionListPojo> reproductionLists) {
+		ReproductionLists = reproductionLists;
 	}
 
 	public static long getSerialversionuid() {
@@ -105,16 +115,9 @@ public class UserPojo implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		return "UserPojo [nombre=" + nombre + ", apellido1=" + apellido1 + ", apellido2=" + apellido2 + ", dni=" + dni
-				+ ", fechaNacimiento=" + fechaNacimiento + ", direccion=" + direccion + ", codigoPosal=" + codigoPosal
-				+ ", ciudad=" + ciudad + ", provincica=" + provincica + ", Account=" + Account + "]";
-	}
-
-	@Override
 	public int hashCode() {
-		return Objects.hash(Account, apellido1, apellido2, ciudad, codigoPosal, direccion, dni, fechaNacimiento, nombre,
-				provincica);
+		return Objects.hash(ReproductionLists, account, address, birthDate, city, dni, name, postalCode, province,
+				surmane1, surname2);
 	}
 
 	@Override
@@ -126,11 +129,19 @@ public class UserPojo implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		UserPojo other = (UserPojo) obj;
-		return Objects.equals(Account, other.Account) && Objects.equals(apellido1, other.apellido1)
-				&& Objects.equals(apellido2, other.apellido2) && Objects.equals(ciudad, other.ciudad)
-				&& codigoPosal == other.codigoPosal && Objects.equals(direccion, other.direccion)
-				&& Objects.equals(dni, other.dni) && Objects.equals(fechaNacimiento, other.fechaNacimiento)
-				&& Objects.equals(nombre, other.nombre) && Objects.equals(provincica, other.provincica);
+		return Objects.equals(ReproductionLists, other.ReproductionLists) && Objects.equals(account, other.account)
+				&& Objects.equals(address, other.address) && Objects.equals(birthDate, other.birthDate)
+				&& Objects.equals(city, other.city) && Objects.equals(dni, other.dni)
+				&& Objects.equals(name, other.name) && postalCode == other.postalCode
+				&& Objects.equals(province, other.province) && Objects.equals(surmane1, other.surmane1)
+				&& Objects.equals(surname2, other.surname2);
+	}
+
+	@Override
+	public String toString() {
+		return "UserPojo [name=" + name + ", surmane1=" + surmane1 + ", surname2=" + surname2 + ", dni=" + dni
+				+ ", birthDate=" + birthDate + ", address=" + address + ", postalCode=" + postalCode + ", city=" + city
+				+ ", province=" + province + ", account=" + account + ", ReproductionLists=" + ReproductionLists + "]";
 	}
 
 }

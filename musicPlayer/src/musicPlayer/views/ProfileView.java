@@ -1,24 +1,26 @@
 package musicPlayer.views;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class ProfileView extends JPanel {
+public class ProfileView {
 
-	private static final long serialVersionUID = 1L;
+	private JPanel panel = null;
 
-	/**
-	 * Create the panel.
-	 * @param musicPanels 
-	 */
+
 	public ProfileView(ArrayList<Object> musicPanels) {
 
+		panel = new JPanel();
+		panel.setBounds(0, 0, 704, 500);
+		panel.setBackground(new Color(255, 255, 255));
+		panel.setLayout(null);
 	}
 
 	public JPanel getPanel() {
 		// TODO Auto-generated method stub
-		return null;
+		return panel;
 	}
 
 }
