@@ -25,8 +25,8 @@ public class MainView  {
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setLayout(null);
 		
-		ControladorRandom controladorRandom = new ControladorRandom();
-		DiskPojo disk = controladorRandom.getRandomDisk();
+		//ControladorRandom controladorRandom = new ControladorRandom();
+		//DiskPojo disk = controladorRandom.getRandomDisk();
 		
 		ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("img/perfil.png"));
 		JLabel imgLabel = new JLabel("", imageIcon, JLabel.CENTER);
