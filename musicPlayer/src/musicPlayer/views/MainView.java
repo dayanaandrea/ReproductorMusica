@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
+
+import musicPlayer.bbdd.pojo.DiskPojo;
+import musicPlayer.controller.ControladorRandom;
+
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,6 +24,9 @@ public class MainView  {
 		panel.setBounds(0, 0, 704, 500);
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setLayout(null);
+		
+		ControladorRandom controladorRandom = new ControladorRandom();
+		DiskPojo disk = controladorRandom.getRandomDisk();
 		
 		ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("img/perfil.png"));
 		JLabel imgLabel = new JLabel("", imageIcon, JLabel.CENTER);
