@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AudioPojo implements Serializable {
+public  class AudioPojo implements Serializable {
 
 	private static final long serialVersionUID = 3728922367979290094L;
 

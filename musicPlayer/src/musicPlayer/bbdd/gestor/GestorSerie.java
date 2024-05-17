@@ -8,21 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import musicPlayer.bbdd.pojo.DiskPojo;
-import musicPlayer.bbdd.pojo.GroupPojo;
+import musicPlayer.bbdd.pojo.SeriePojo;
 import musicPlayer.bbdd.utils.DBUtils;
 
-public class GestorGroup {
+public class GestorSerie {
+	public List<SeriePojo> getSerie(int idSerie) {
+		List<SeriePojo> ret = null;
 
-	public GroupPojo getGroupByDisk(DiskPojo disk) {
-
-		return null;
-	}
-
-	public List<GroupPojo> getAllGroup() {
-		List<GroupPojo> ret = null;
-
-		String sql = "SELECT * FROM band ";
+		String sql = "SELECT series.* FROM series INNER JOIN podcaster ON series.idPodcaster = podcaster.idPodcaster WHERE series.idPodcaster = ?";
 
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -33,21 +26,24 @@ public class GestorGroup {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
 			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, idSerie);
 			resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
 
 				if (null == ret)
-					ret = new ArrayList<GroupPojo>();
-				GroupPojo group = new GroupPojo();
-				group.setId(resultSet.getInt("idBand"));
-				group.setImagen(resultSet.getString("image"));
-				group.setName(resultSet.getString("theName"));
-				java.sql.Date date = resultSet.getDate("dateOfFormed");
-				group.setFormationDate(new java.util.Date(date.getTime()));
-				group.setDescription(resultSet.getString("theDdescription"));
-				group.setReproductionNumber(resultSet.getInt("numberOfReproductions"));
-				ret.add(group);
+					ret = new ArrayList<SeriePojo>();
+
+				SeriePojo serie = new SeriePojo();
+				serie.setIdSeries(resultSet.getInt("idSeries"));
+				serie.setTitle(resultSet.getString("title"));
+				java.sql.Date date = resultSet.getDate("startDate");
+				serie.setStartDate(new java.util.Date(date.getTime()));
+				java.sql.Date date1 = resultSet.getDate("endingDate");
+				serie.setEndDate(new java.util.Date(date.getTime()));
+				serie.setDescription(resultSet.getString("theDescription"));
+				serie.setReproductionNumber(resultSet.getInt("numberOfReproductions"));
+				ret.add(serie);
 			}
 		} catch (SQLException sqle) {
 			System.out.println("Error con la BBDD - " + sqle.getMessage());
@@ -77,27 +73,27 @@ public class GestorGroup {
 		return ret;
 	}
 
-	public int getGroupId(String grupoSeleccionado) {
+	public int getDisckId(String serieSeleccionado ) { 
 		int ret = 0;
 		Connection connection = null;
 		PreparedStatement statement = null;
 
-		String sql = "SELECT idBand FROM band WHERE theName = ?";
+		String sql = "SELECT idDisc FROM disc WHERE title = ?";
 
 		try {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 			statement = connection.prepareStatement(sql);
-
-			statement.setString(1, grupoSeleccionado);
+			
+			statement.setString(1, serieSeleccionado);
 			ResultSet resultSet = statement.executeQuery();
-
+			
 			if (resultSet.next()) {
-				ret  = resultSet.getInt("idBand"); 
+				ret  = resultSet.getInt("idDisc"); 
 			}
-
+			
 		} catch (SQLException sqle) {
 			System.out.println("Error con la BBDD - " + sqle.getMessage());
-		} catch (Exception e) {
+			} catch (Exception e) {
 			throw e;
 		} finally {
 			try {
@@ -115,10 +111,11 @@ public class GestorGroup {
 		}
 		return ret;
 	}
-	public List<GroupPojo> getGroup(String grupoSeleccionado ) {
-		List<GroupPojo> ret = null;
 
-		String sql = "SELECT * FROM band WHERE theName = ?";
+	public List<SeriePojo> getDisk(String serieSeleccionado ) {
+		List<SeriePojo> ret = null;
+
+		String sql = "SELECT * FROM disc WHERE title = ?";
 
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -129,24 +126,24 @@ public class GestorGroup {
 			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
 			statement = connection.prepareStatement(sql);
-			statement.setString(1, grupoSeleccionado);
+			statement.setString(1, serieSeleccionado);
 			ResultSet resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
 
 				
-				ret = new ArrayList<GroupPojo>();
+				ret = new ArrayList<SeriePojo>();
 				
-				GroupPojo group = new GroupPojo();
-				group.setId(resultSet.getInt("idBand"));
-				group.setImagen(resultSet.getString("image"));
-				group.setName(resultSet.getString("theName"));
-				java.sql.Date date = resultSet.getDate("dateOfFormed");
-				group.setFormationDate(new java.util.Date(date.getTime()));
-				group.setDescription(resultSet.getString("theDdescription"));
-				group.setReproductionNumber(resultSet.getInt("numberOfReproductions"));
-				
-				ret.add(group);
+				SeriePojo serie = new SeriePojo();
+				serie.setIdSeries(resultSet.getInt("idSeries"));
+				serie.setTitle(resultSet.getString("title"));
+				java.sql.Date date = resultSet.getDate("startDate");
+				serie.setStartDate(new java.util.Date(date.getTime()));
+				java.sql.Date date1 = resultSet.getDate("endingDate");
+				serie.setEndDate(new java.util.Date(date.getTime()));
+				serie.setDescription(resultSet.getString("theDescription"));
+				serie.setReproductionNumber(resultSet.getInt("numberOfReproductions"));
+				ret.add(serie);
 			}
 		} catch (SQLException sqle) {
 			System.out.println("Error con la BBDD - " + sqle.getMessage());
@@ -163,5 +160,8 @@ public class GestorGroup {
 		}
 		return ret;
 	}
+
+
+
 
 }

@@ -16,7 +16,7 @@ import musicPlayer.bbdd.utils.DBUtils;
 
 public class GestorUsers {
 
-	public  ArrayList<AccountPojo> obtenerDatosLogin() {
+	public ArrayList<AccountPojo> obtenerDatosLogin() {
 		ArrayList<AccountPojo> ret = null;
 
 		String sql = "select * from theuser";
@@ -76,7 +76,8 @@ public class GestorUsers {
 		}
 		return ret;
 	}
-	public  boolean bloquearUsuario(String user) {
+
+	public boolean bloquearUsuario(String user) {
 
 		boolean modificacionExitosa = false;
 		Connection connection = null;
@@ -114,35 +115,53 @@ public class GestorUsers {
 		return modificacionExitosa;
 
 	}
-	public boolean usuarioBloqueado(String user) {
+
+	public boolean usuarioBloqueado(String user) throws SQLException, Exception {
+		boolean ret = false;
+		Connection connection = null;
+		PreparedStatement statement = null;
+
 		String sql = "SELECT isLocked FROM theuser WHERE userName = ?";
-		try (
-				Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 
-				PreparedStatement statement = connection.prepareStatement(sql)) {
-
+		try {
+			connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+			statement = connection.prepareStatement(sql);
 			statement.setString(1, user);
 			ResultSet resultSet = statement.executeQuery();
-
 			if (resultSet.next()) {
-				return "Y".equalsIgnoreCase(resultSet.getString("isLocked"));
+				ret = "Y".equalsIgnoreCase(resultSet.getString("isLocked"));
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (statement != null)
+					statement.close();
+			} catch (Exception e) {
+
+			}
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+
+			}
 		}
-		return false;
+		return ret;
 	}
+
 	public void updateLastLogin(String user) {
 		String query = "UPDATE theuser SET registrationDate = ? WHERE userName = ?";
-		try (
-				Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
+		try (Connection connection = DriverManager.getConnection(DBUtils.URL, DBUtils.USER, DBUtils.PASS);
 				PreparedStatement pstmt = connection.prepareStatement(query)) {
-			
-				pstmt.setString(1, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-				pstmt.setString(2, user);
 
-				pstmt.executeUpdate();
-				
+			pstmt.setString(1, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			pstmt.setString(2, user);
+
+			pstmt.executeUpdate();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

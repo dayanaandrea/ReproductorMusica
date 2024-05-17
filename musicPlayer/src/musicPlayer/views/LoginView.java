@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -16,20 +17,19 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import musicPlayer.controller.UserController;
-
+import musicPlayer.controller.exceptions.LoginPassException;
 
 public class LoginView {
 	private JPanel panel = null;
 	private JTextField textUser;
 	private JPasswordField passwordField;
 	private int intentos = 1;
-	
+
 	public LoginView(ArrayList<Object> musicPanels) {
 		panel = new JPanel();
 		panel.setBounds(0, 0, 704, 500);
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setLayout(null);
-
 
 		textUser = new JTextField();
 		textUser.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -56,87 +56,98 @@ public class LoginView {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String user = textUser.getText();
-				String password= new String(passwordField.getPassword());
+				String password = new String(passwordField.getPassword());
 
 				UserController userController = new UserController();
-				boolean bloqueado = userController.usuarioBloqueado(user, password);
-				boolean credencialesValidas = userController.verificarCredenciales(user, password);
 
-
-				boolean cuentasBloqueadas = userController.bloqueoLogin(user, password, intentos);
-
-
-				if (bloqueado) {
-
-					JOptionPane.showMessageDialog(panel, "TU CUENTA ESTA  BLOQUEADA  ", "Error de inicio de sesión",
-							JOptionPane.ERROR_MESSAGE);
-
-				} else if (credencialesValidas) {
+				try {
 					
-					JOptionPane.showMessageDialog(panel, "Has inciado sesión correctamente ",
-							"Inicio de sesión correcto", JOptionPane.INFORMATION_MESSAGE);
-					userController.modificarFecha(user);
-
-					((WelcomeView) musicPanels.get(0)).getPanel().setVisible(false);
-					((LoginView) musicPanels.get(1)).getPanel().setVisible(false);
-					((RegisterView) musicPanels.get(2)).getPanel().setVisible(false);
-					((MainView) musicPanels.get(3)).getPanel().setVisible(true );
-					((GroupsView) musicPanels.get(4)).getPanel().setVisible(false);
-					((PodcasterView) musicPanels.get(5)).getPanel().setVisible(false);
-					((ReproductionView) musicPanels.get(6)).getPanel().setVisible(false);
-					((FavoritesView) musicPanels.get(7)).getPanel().setVisible(false);
-					((ProfileView) musicPanels.get(8)).getPanel().setVisible(false);
-				} else  {
-					do {
-						System.out.println(intentos);
-						intentos ++;
-						JOptionPane.showMessageDialog(panel, "Usuario o contraseña incorrecta", "Error de inicio de sesión",
+					if (userController.usuarioBloqueado(user, password)) {
+						JOptionPane.showMessageDialog(panel, "TU CUENTA ESTA  BLOQUEADA  ", "Error de inicio de sesión",
 								JOptionPane.ERROR_MESSAGE);
-						System.out.println(intentos);
-					} while (cuentasBloqueadas);
 
+						intentos = 1;
 
+					} 
+					
+					try {
+					    userController.verificarCredenciales2(user, password);
+					    // Las credenciales son correctas, procede con el inicio de sesión
+					    JOptionPane.showMessageDialog(panel, "Has inciado sesión correctamente ",
+					            "Inicio de sesión correcto", JOptionPane.INFORMATION_MESSAGE);
+					    userController.modificarFecha(user);
+					    
+					    // Resto del código para cambiar la visibilidad de los paneles...
+					    
+					    ((WelcomeView) musicPanels.get(0)).getPanel().setVisible(false);
+						((LoginView) musicPanels.get(1)).getPanel().setVisible(false);
+						((RegisterView) musicPanels.get(2)).getPanel().setVisible(false);
+						((MainView) musicPanels.get(3)).getPanel().setVisible(true);
+						((GroupsView) musicPanels.get(4)).getPanel().setVisible(false);
+						((PodcasterView) musicPanels.get(5)).getPanel().setVisible(false);
+						((ReproductionView) musicPanels.get(6)).getPanel().setVisible(false);
+						((FavoritesView) musicPanels.get(7)).getPanel().setVisible(false);
+						((ProfileView) musicPanels.get(8)).getPanel().setVisible(false);
+					    intentos = 1;
+					} catch (LoginPassException ex) {
+					    JOptionPane.showMessageDialog(panel, "Usuario o contraseña incorrecta",
+					            "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
+					    
+					    if (userController.bloquearUsuario(user, intentos)) {
+							JOptionPane.showMessageDialog(panel, "TU CUENTA HA SIDO BLOQUEADA  ",
+									"Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
+						}
+					    
+					    intentos++;
+					} 
 
+					
+					/*else if (userController.verificarCredenciales2(user, password)) {
+
+						JOptionPane.showMessageDialog(panel, "Has inciado sesión correctamente ",
+								"Inicio de sesión correcto", JOptionPane.INFORMATION_MESSAGE);
+						userController.modificarFecha(user);
+
+						((WelcomeView) musicPanels.get(0)).getPanel().setVisible(false);
+						((LoginView) musicPanels.get(1)).getPanel().setVisible(false);
+						((RegisterView) musicPanels.get(2)).getPanel().setVisible(false);
+						((MainView) musicPanels.get(3)).getPanel().setVisible(true);
+						((GroupsView) musicPanels.get(4)).getPanel().setVisible(false);
+						((PodcasterView) musicPanels.get(5)).getPanel().setVisible(false);
+						((ReproductionView) musicPanels.get(6)).getPanel().setVisible(false);
+						((FavoritesView) musicPanels.get(7)).getPanel().setVisible(false);
+						((ProfileView) musicPanels.get(8)).getPanel().setVisible(false);
+
+						intentos = 1;
+
+					} else {
+						// Se cuela en user & pass
+						JOptionPane.showMessageDialog(panel, "Usuario o contraseña incorrecta",
+								"Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
+
+						if (userController.bloquearUsuario(user, intentos)) {
+							JOptionPane.showMessageDialog(panel, "TU CUENTA HA SIDO BLOQUEADA  ",
+									"Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
+						}
+
+						intentos++;
+					}*/
+					
+					
+				}catch (LoginPassException log ) {
+				    JOptionPane.showMessageDialog(panel, "Error al acceder a BBDD", "Error ",
+				            JOptionPane.ERROR_MESSAGE); 
+				}catch (SQLException e1) {
+					JOptionPane.showMessageDialog(panel, "Error de Base de Datos", "Error ",
+							JOptionPane.ERROR_MESSAGE);
+				
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(panel, "Error al acceder a BBDD", "Error ",
+							JOptionPane.ERROR_MESSAGE);
+				} finally {
+					textUser.setText("");
+					passwordField.setText("");
 				}
-
-				/*
-				JButton btnLogin = new JButton("Login");
-				btnLogin.addActionListener(new ActionListener() {
-				    public void actionPerformed(ActionEvent e) {
-				        String user = textUser.getText();
-				        String password = new String(passwordField.getPassword());
-
-				        UserController userController = new UserController();
-				        boolean bloqueado = userController.usuarioBloqueado(user);
-				        if (bloqueado) {
-				            JOptionPane.showMessageDialog(panel, "La cuenta está bloqueada", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
-				        } else {
-				            boolean credencialesValidas = userController.verificarCredenciales(user, password);
-				            if (credencialesValidas) {
-				                JOptionPane.showMessageDialog(panel, "Inicio de sesión exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-				               ((WelcomeView) musicPanels.get(0)).getPanel().setVisible(false);
-					((LoginView) musicPanels.get(1)).getPanel().setVisible(false);
-					((RegisterView) musicPanels.get(2)).getPanel().setVisible(false);
-					((MainView) musicPanels.get(3)).getPanel().setVisible(true );
-					((GroupsView) musicPanels.get(4)).getPanel().setVisible(false);
-					((PodcasterView) musicPanels.get(5)).getPanel().setVisible(false);
-					((ReproductionView) musicPanels.get(6)).getPanel().setVisible(false);
-					((FavoritesView) musicPanels.get(7)).getPanel().setVisible(false);
-					((ProfileView) musicPanels.get(8)).getPanel().setVisible(false);
-				            } else {
-				                JOptionPane.showMessageDialog(panel, "Usuario o contraseña incorrecta", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
-				                //Me tendria que llevar a algun metodo que me haga un bucle para que pueda hacer el bloqueo a el de tres 
-				            }
-				        }
-				    }
-				});*/
-
-
-				textUser.setText("");
-				passwordField.setText("");
-				//}
-
-
 			}
 
 		});
@@ -152,7 +163,7 @@ public class LoginView {
 				((WelcomeView) musicPanels.get(0)).getPanel().setVisible(false);
 				((LoginView) musicPanels.get(1)).getPanel().setVisible(false);
 				((RegisterView) musicPanels.get(2)).getPanel().setVisible(true);
-				((MainView) musicPanels.get(3)).getPanel().setVisible(false );
+				((MainView) musicPanels.get(3)).getPanel().setVisible(false);
 				((GroupsView) musicPanels.get(4)).getPanel().setVisible(false);
 				((PodcasterView) musicPanels.get(5)).getPanel().setVisible(false);
 				((ReproductionView) musicPanels.get(6)).getPanel().setVisible(false);
@@ -163,15 +174,9 @@ public class LoginView {
 		});
 		lblRegistre.setBounds(269, 331, 103, 14);
 		panel.add(lblRegistre);
-
-
 	}
+
 	public JPanel getPanel() {
 		return panel;
 	}
-
-
 }
-
-
-

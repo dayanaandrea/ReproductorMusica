@@ -8,7 +8,7 @@ import musicPlayer.bbdd.pojo.GroupPojo;
 
 public class ControladorRandom {
 
-public DiskPojo getRandomDisk() {
+public List <DiskPojo> getRandomDisk() {
 		
 	GestorDisk gestorDisk = new GestorDisk();
 	GestorGroup gestorGroup = new GestorGroup();
@@ -20,13 +20,7 @@ public DiskPojo getRandomDisk() {
 	System.out.println(numeroAleatorio);
 		
 	List <DiskPojo> disks = gestorDisk.getAllDisks(numeroAleatorio);
-	System.out.println(disks);
 	
-	DiskPojo disk = disks.get(numeroAleatorio);
-	
-	GroupPojo groupPojo = gestorGroup.getGroupByDisk(disk);
-	disk.setGroup(groupPojo);
-	
-	return disk;
+	return disks;
 	}
 }

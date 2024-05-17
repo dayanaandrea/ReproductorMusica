@@ -13,7 +13,10 @@ import java.awt.event.MouseEvent;
 public class ReproductionView  {
 
 	private JPanel panel = null;
-
+	private String podcasterSeleccionado = null;
+	private String serieSeleccionado = null;
+	private String podcastSeleccionada = null;
+	private boolean datosCargados = false;
 
 	public ReproductionView(ArrayList<Object> musicPanels) {
 
